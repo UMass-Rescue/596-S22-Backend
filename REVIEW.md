@@ -9,3 +9,16 @@ Final Note: Honestly I don't have much experience with backend so I cannot give 
 However, from a software engineering perspective this code follows all best pratices. Maybe adding a few test cases might help (although
 I am not sure how testing works for the backend). 
 ###### Review 1 ends here
+
+###### Review 2 by Yugantar Prakash
+
+Documentation and preliminaries: Overall done well. Got the following error when running ```alembic upgrade head```:
+```
+ModuleNotFoundError: No module named 'psycopg2'
+```
+Of course that's a simple fix, but recommended to add this to READ.md
+
+Similarly, recommended to add basic instructions to installing Docker-Compose on top of Docker, as well as to make sure it is the right version. Of course, these recommendations are coming from someone with no prior experience working with Dockers.
+
+Code review: Modularity of the code is done well! Good commenting practice and naming convention followed!
+###### Reivew 2 ends here
