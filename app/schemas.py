@@ -1,5 +1,8 @@
 from datetime import datetime
-from typing import List, Optional
+from fileinput import filename
+from sqlite3 import Timestamp
+from typing import List, Optional, Dict
+from xmlrpc.client import DateTime
 from pydantic import BaseModel
 from sqlalchemy import TIMESTAMP, true
 
@@ -45,6 +48,42 @@ class Message(BaseModel):
     time: datetime = datetime.now()
     sender_id: int
     recipient_id: int
+
+    class Config:
+        orm_mode = True
+
+######### Recognized Plates ###############
+class RecognizedPlate(BaseModel):
+    id: int
+    license: str
+    time: datetime
+    footage_id: int
+
+    class Config:
+        orm_mode = True
+
+class CreateRecognizedPlate(BaseModel):
+    license: str
+    time: datetime
+
+############ License Plate Footage #############
+
+class LicenseFootageBase(BaseModel):
+    link: str
+
+class CreateLicenseFootage(LicenseFootageBase):
+    pass 
+
+class CreateLicenseFootageObj(BaseModel):
+    link: str
+    filename: str
+    recognized_plates : List[CreateRecognizedPlate]
+
+class LicenseFootage(LicenseFootageBase):
+    id: int
+    filename: str
+    date_uploaded = datetime.now()
+    recognized_plates: List[RecognizedPlate] = []
 
     class Config:
         orm_mode = True

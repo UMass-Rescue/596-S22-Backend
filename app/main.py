@@ -71,3 +71,19 @@ def reader_messages_for_user(user_id: int, skip: int = 0, limit: int = 100, db: 
 @app.post("/messages/", response_model=schemas.Message)
 def create_message(message: schemas.MessageCreate, db: Session = Depends(get_db)):
     return crud.create_message(db=db, message=message)
+
+# # Route - POST - Create a license footage object for a provided link
+# @app.post("/licenses/", response_model=schemas.CreateLicenseFootage)
+# def create_license_footage(license_footage: schemas.CreateLicenseFootage, db:Session = Depends(get_db)):
+#     return crud.create_license_footage_with_link(license_footage=license_footage, db=db)
+
+# Route - POST - Create a license footage object and add plates for json object
+@app.post("/licenses/", response_model=schemas.LicenseFootage)
+def create_license_footage(license_footage: schemas.CreateLicenseFootageObj, db:Session = Depends(get_db)):
+    return crud.create_license_footage_with_obj(license_footage=license_footage, db=db)
+
+# Route - GET - get all the plates identified for a license_footage_id
+@app.get("/licenses/{footage_id}/plates", response_model=List[schemas.RecognizedPlate])
+def get_plates_for_footage_id(footage_id: int, skip: int = 0, limit: int= 100, db: Session = Depends(get_db)):
+    plates = crud.get_license_plates_for_filename(footage_id=footage_id, skip=skip, limit=limit, db=db)
+    return plates

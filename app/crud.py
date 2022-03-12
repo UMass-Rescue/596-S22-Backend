@@ -1,6 +1,7 @@
 from email import message
 from statistics import mode
 from sqlalchemy.orm import Session
+import os
 
 from . import models, schemas
 
@@ -52,3 +53,56 @@ def create_message(message: schemas.MessageCreate, db: Session):
     db.commit()
     db.refresh(db_message)
     return db_message
+
+# Create License Footage using specified Link
+def create_license_footage_with_link(license_footage: schemas.CreateLicenseFootage, db: Session):
+
+    # Add License Footage Object
+    db_message = models.LicenseFootage(filename=filename, link=license_footage.link)
+    db.add(db_message)
+    db.commit()
+    db.refresh(db_message)
+    
+    # Insert code to get identify all license plates and their attachment.
+
+    ####################
+    ## YOUR CODE HERE ##
+    ####################
+
+    # return type - Array of License plates and their occurance - [RecognizedPlate]
+    # Instantiate footage_id - using db_message.id
+
+    recognized_plates = []
+    filename = os.path.basename(license_footage.link)
+
+    # Add Plates individually
+    for plate in recognized_plates:
+        db.add(plate)
+        db.commit()
+        db.refresh(plate)
+
+    return license_footage
+
+# Create License Footage with Specified Object
+def create_license_footage_with_obj(license_footage: schemas.LicenseFootage, db: Session):
+
+    # Add the parent information
+    db_parent_message = models.LicenseFootage(filename=license_footage.filename, link=license_footage.link)
+    db.add(db_parent_message)
+    db.commit()
+    db.refresh(db_parent_message)
+
+    parent_id = db_parent_message.id
+
+    # Add the child information
+    for plate in license_footage.recognized_plates:
+        db_child_message = models.RecognizedPlate(license=plate.license, time=plate.time, footage_id=parent_id)
+        db.add(db_child_message)
+        db.commit()
+        db.refresh(db_child_message)
+
+    return db_parent_message
+
+# Get all license plates for that license_footage id
+def get_license_plates_for_filename(footage_id: int, db: Session, skip: int = 0, limit: int = 100):
+    return db.query(models.RecognizedPlate).filter(models.RecognizedPlate.footage_id == footage_id).offset(skip).limit(limit).all()

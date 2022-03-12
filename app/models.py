@@ -34,3 +34,23 @@ class Message(Base):
     recipient_id = Column(Integer, index=True)
 
     sender = relationship("User", back_populates="messages")
+
+class LicenseFootage(Base):
+    __tablename__ = "license_footage"
+
+    id = Column(Integer, primary_key=True, index=True)
+    filename = Column(String, index=True)
+    date_uploaded = Column(TIMESTAMP(timezone=False), nullable=False, default=datetime.now())
+    link = Column(String)
+
+    recognized_plates = relationship("RecognizedPlate", back_populates="footage")
+
+class RecognizedPlate(Base):
+    __tablename__ = "recognized_plates"
+
+    id = Column(Integer, primary_key=True, index=True)
+    license = Column(String, index=True)
+    time = Column(TIMESTAMP(timezone=False))
+    footage_id = Column(Integer, ForeignKey("license_footage.id"))
+
+    footage = relationship("LicenseFootage", back_populates="recognized_plates")
