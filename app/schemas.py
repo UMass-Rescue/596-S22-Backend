@@ -87,3 +87,74 @@ class LicenseFootage(LicenseFootageBase):
 
     class Config:
         orm_mode = True
+
+
+############ Transcribed Interview Data #############
+
+class InterviewCreate(BaseModel):
+    full_name: str
+    created_at: datetime = datetime
+    address: str
+    case: int
+
+class Interview(BaseModel):
+    id: int
+    full_name: str
+    created_at: datetime = datetime
+    address: str
+    case: int
+    full_text: str
+
+    class Config:
+        orm_mode = True
+
+class Question_Answer_PairCreate(BaseModel):
+    interview_id: int ##I don't know how to link this to another table
+    question: str
+    answer: str
+
+class Question_Answer_Pair(BaseModel):
+    id: int
+    interview_id: int ##I don't know how to link this to another table
+    question: str
+    answer: str
+
+    class Config:
+        orm_mode = True
+
+class QuestionCreate(BaseModel):
+    case: int
+    question: str
+
+class Question(BaseModel):
+    case: int
+    question: str
+
+    class Config:
+        orm_mode = True
+
+class Additional_QuestionCreate(BaseModel):
+    interview_id: int ##I don't know how to link this to another table
+    question: str
+
+class Additional_Question(BaseModel):
+    interview_id: int ##I don't know how to link this to another table
+    question: str
+
+    class Config:
+        orm_mode = True
+
+class Answer_NERCreate(BaseModel):
+    question_answer_pair_id: int ##I don't know how to link this to another table
+    ner_label: str
+    start_index: int
+    end_index: int
+
+class Answer_NER(BaseModel):
+    question_answer_pair_id: int ##I don't know how to link this to another table
+    ner_label: str
+    start_index: int
+    end_index: int
+
+    class Config:
+        orm_mode = True
