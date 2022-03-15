@@ -87,3 +87,26 @@ def create_license_footage(license_footage: schemas.CreateLicenseFootageObj, db:
 def get_plates_for_footage_id(footage_id: int, skip: int = 0, limit: int= 100, db: Session = Depends(get_db)):
     plates = crud.get_license_plates_for_filename(footage_id=footage_id, skip=skip, limit=limit, db=db)
     return plates
+
+# Route - POST - Create a interview object and add transcribed full text
+@app.post("/transciber/{audio_filename}", response_model=schemas.LicenseFootage)
+def create_interview(license_footage: schemas.CreateLicenseFootageObj, db:Session = Depends(get_db)):
+    return crud.create_interview(audio_filename=audio_filename, db=db)
+
+# Route - POST - Create question_answer_pairs and ners from analyzed text
+#HOW ARE WE GOING TO DEAL WITH CASE NUMBERS? INCLUDE IN POST REQUEST?
+@app.post("/transciber/{audio_filename}/analyze", response_model=schemas.LicenseFootage)
+def create_interview(license_footage: schemas.CreateLicenseFootageObj, db:Session = Depends(get_db)):
+    return crud.analyze_interview(case=case, audio_filename=audio_filename, db=db)
+
+# Route - GET - get all question answer pairs for an interview_id
+@app.get("/transcriber/{interview_id}/question_answer_pairs", response_model=List[schemas.Question_Answer_Pair])
+def get_question_answer_pair_for_interview_id(interview_id: int, skip: int = 0, limit: int= 100, db: Session = Depends(get_db)):
+    pairs = crud.get_question_answer_pairs(interview_id=interview_id, skip=skip, limit=limit, db=db)
+    return pairs
+
+# Route - GET - get all ners for an question_answer_pair_id
+@app.get("/transcriber/{question_answer_pair_id}/ners", response_model=List[schemas.Question_Answer_Pair])
+def get_ner_for_question_answer_pair_id(question_answer_pair_id: int, skip: int = 0, limit: int= 100, db: Session = Depends(get_db)):
+    ners = crud.get_ners_for_answer(question_answer_pair_id=question_answer_pair_id, skip=skip, limit=limit, db=db)
+    return ners

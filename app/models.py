@@ -59,6 +59,7 @@ class Interview(Base):
     __tablename__ = "interview"
 
     id = Column(Integer, primary_key=True, index=True)
+    filename = Column(String, index=True)
     full_name = Column(String, index=True)
     created_at = Column(TIMESTAMP(timezone=False))
     address = Column(String, index=True)

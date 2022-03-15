@@ -92,6 +92,7 @@ class LicenseFootage(LicenseFootageBase):
 ############ Transcribed Interview Data #############
 
 class InterviewCreate(BaseModel):
+    filename: str
     full_name: str
     created_at: datetime = datetime
     address: str
@@ -99,6 +100,7 @@ class InterviewCreate(BaseModel):
 
 class Interview(BaseModel):
     id: int
+    filename: str
     full_name: str
     created_at: datetime = datetime
     address: str
