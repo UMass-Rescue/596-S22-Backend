@@ -116,6 +116,7 @@ def get_footage_for_plate_id(license_plate_number: str, db: Session, skip: int =
 
     # for all discovered plates, add unique footage to dictionary
     for plate in plates:
-        print(plate.footage_id) 
+        if plate.footage_id not in data:
+            data[plate.footage_id] = db.query(models.LicenseFootage).filter(models.LicenseFootage.id == plate.footage_id).offset(skip).limit(limit).all()[0]
 
-    return []
+    return list(data.values())
