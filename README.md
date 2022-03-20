@@ -1,6 +1,6 @@
 # 596-S22-Backend
 Backend Repo for 596RL Spring 2022
-
+```
 .
 ├── app
 │   ├── __init__.py
@@ -12,10 +12,16 @@ Backend Repo for 596RL Spring 2022
 ├── Alembic
 ├── Dockerfile
 └── requirements.txt
+```
 
-### MUST BE INSTALLED
+### 👾 MUST BE INSTALLED
+```
 - Docker
-- Alembic (Locally for database manipulation)
+- Alembic     (Locally for database manipulation)
+- SQLAlchemy  (Locally for database manipulation)
+```
+
+### 🚀 How to Run the Container
 
 This repo uses Docker to containerize any processes used. In order to the run the repo, it is advised that you install docker.
 
@@ -27,7 +33,13 @@ docker-compose up -d --build
 docker-compose up
 ```
 
-### Configuring PostgreSQL Server with Alembic
+### 🧪 Useful Tools for Debugging and Testing
+```
+localhost:8000/docs   # This is a place to view all the routes available as well as manipulate them
+Postman               # This is a popular dev tool for route testing and debugging (A personal favorite)
+```
+
+### 💻 Configuring PostgreSQL Server with Alembic
 In order to begin posting to routes and adding in data, you will need to load in all the proper tables. Using Alembic this is really easy.
 
 First, install alembic onto your local machine:
@@ -35,12 +47,22 @@ First, install alembic onto your local machine:
 pip3 install alembic
 ```
 
-Next, you need to upgrade the head in order to setup all the tables properly:
+Next, generate your alembic revision file (this is where you will do all your database modifications)
+```
+alembic revision -m "<What your revision is>"
+```
+
+To make sure your revision is properly written, you can check it with:
+```
+alembic upgrade head --sql
+```
+
+Finally, you need to upgrade the head in order to setup all the tables properly:
 ```
 alembic upgrade head
 ```
 
-### Downgrading and Upgrading the Database
+### 💽 Downgrading and Upgrading the Database
 Using alembic, you can downgrade to a previous version by typing:
 ```
 alembic downgrade -1
