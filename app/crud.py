@@ -106,3 +106,16 @@ def create_license_footage_with_obj(license_footage: schemas.LicenseFootage, db:
 # Get all license plates for that license_footage id
 def get_license_plates_for_filename(footage_id: int, db: Session, skip: int = 0, limit: int = 100):
     return db.query(models.RecognizedPlate).filter(models.RecognizedPlate.footage_id == footage_id).offset(skip).limit(limit).all()
+
+# Get all footage for a plate_id
+def get_footage_for_plate_id(license_plate_number: int, db: Session, skip: int = 0, limit: int = 0):
+    data = {}
+
+    # Get all the plates
+    plates = db.query(models.RecognizedPlate).filter(models.RecognizedPlate.license == license_plate_number).offset(skip).limit(limit).all()
+
+    # for all discovered plates, add unique footage to dictionary
+    for plate in plates:
+        print(plate.footage_id) 
+
+    return []
