@@ -108,7 +108,7 @@ def get_license_plates_for_filename(footage_id: int, db: Session, skip: int = 0,
     return db.query(models.RecognizedPlate).filter(models.RecognizedPlate.footage_id == footage_id).offset(skip).limit(limit).all()
 
 # Get all footage for a plate_id
-def get_footage_for_plate_id(license_plate_number: int, db: Session, skip: int = 0, limit: int = 0):
+def get_footage_for_plate_id(license_plate_number: str, db: Session, skip: int = 0, limit: int = 0):
     data = {}
 
     # Get all the plates
