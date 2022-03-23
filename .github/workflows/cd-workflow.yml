@@ -8,19 +8,19 @@ jobs:
     runs-on: ubuntu-latest
     name: Docker Build, Tag, Push
 
-  steps:
-    - name: Checkout
-      uses: actions/checkout@v1
-    - name: Download built artifact
-      uses: actions/download-artifact@main
-      with:
-        name: webpack artifacts
-        path: public
-    - name: Build container image
-      uses: docker/build-push-action@v1
-      with:
-        username: ${{github.actor}}
-        password: ${{secrets.GITHUB_TOKEN}}
-        registry: docker.pkg.github.com
-        repository: UMass-Rescue/596-S22-Backend
-        tag_with_sha: true
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v1
+      - name: Download built artifact
+        uses: actions/download-artifact@main
+        with:
+          name: webpack artifacts
+          path: public
+      - name: Build container image
+        uses: docker/build-push-action@v1
+        with:
+          username: ${{github.actor}}
+          password: ${{secrets.GITHUB_TOKEN}}
+          registry: docker.pkg.github.com
+          repository: UMass-Rescue/596-S22-Backend
+          tag_with_sha: true
