@@ -87,3 +87,8 @@ def create_license_footage(license_footage: schemas.CreateLicenseFootageObj, db:
 def get_plates_for_footage_id(footage_id: int, skip: int = 0, limit: int= 100, db: Session = Depends(get_db)):
     plates = crud.get_license_plates_for_filename(footage_id=footage_id, skip=skip, limit=limit, db=db)
     return plates
+
+@app.get("/licenses/plates/{license_plate_number}", response_model=List[schemas.LicenseFootage])
+def get_footage_for_plate_id(license_plate_number: str, skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
+    footage = crud.get_footage_for_plate_id(license_plate_number=license_plate_number, skip=skip, limit=limit, db=db)
+    return footage
