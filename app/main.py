@@ -74,4 +74,10 @@ def create_message(message: schemas.MessageCreate, db: Session = Depends(get_db)
 
 @app.post("/denseCaptionCreate/", response_model=str)
 def create_dense_caption(data: schemas.DenseCaptionCreate, db: Session = Depends(get_db)):
-    return crud.create_message(data=data, db=db)
+    return crud.create_dense_caption(data=data, db=db)
+
+@app.get("/denseCaptionGet/{parent_id}/child", response_model=List[schemas.DenseCaptionChild])
+def get_children(parent_id: int, skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
+    children = crud.get_children(parent_id=parent_id, db=db, skip=skip, limit=limit)
+    return children
+    

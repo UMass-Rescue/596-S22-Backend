@@ -52,3 +52,16 @@ class Message(BaseModel):
 class DenseCaptionCreate(BaseModel):
     opt: Dict[str, Union[str, int]]
     results: List[Dict[str, Union[str, List[float], List[str], List[List[float]]]]]
+
+class DenseCaptionChild(BaseModel):
+    id: int
+    caption: str
+    score: float
+    bounding_x: float
+    bounding_y: float
+    bounding_w: float
+    bounding_h: float
+    parent_id: int
+
+    class Config:
+        orm_mode = True
