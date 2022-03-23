@@ -25,6 +25,13 @@ Backend Repo for 596RL Spring 2022
 To successfully connect to the database, we use a `.env` file, which you will need to generate using:
 `touch .env` in the backend directory. This is an untracked file in our repo. Here you will need to paste in the secrets of the backend. DM Sam DuBois and he will send you the file.
 
+```
+# PostgreSQL Container Secrets
+POSTGRES_USER=
+POSTGRES_PASSWORD=
+POSTGRES_DB=
+```
+
 
 ### 🚀 How to Run the Container
 
