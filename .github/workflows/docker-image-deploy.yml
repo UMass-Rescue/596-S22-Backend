@@ -22,4 +22,4 @@ jobs:
           password: ${{secrets.GITHUB_TOKEN}}
           registry: docker.pkg.github.com
           repository: umass-rescue/596-s22-backend/backend
-          tag_with_sha: true
+          tag: latest
