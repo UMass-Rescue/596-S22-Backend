@@ -2,16 +2,6 @@ version: '3.8'
 
 # Setting up the PostgreSQL DB Container
 services:
-  db:
-    image: 'postgres:latest'
-    restart: always
-    env_file: # The location we use to share all of our secrets
-      - .env
-    volumes:
-      - ./db-data/:/var/lib/postgresql/data/
-    ports:
-      - 5432:5432
-  
   server:
     build:
       context: ./
@@ -25,3 +15,13 @@ services:
       - .env
     ports:
       - 8000:8000
+      
+  db:
+    image: 'postgres:latest'
+    restart: always
+    env_file: # The location we use to share all of our secrets
+      - .env
+    volumes:
+      - ./db-data/:/var/lib/postgresql/data/
+    ports:
+      - 5432:5432
