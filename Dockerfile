@@ -8,8 +8,9 @@ RUN pip install --no-cache-dir --upgrade -r /rescue/requirements.txt
 
 COPY alembic/ ./alembic/
 COPY alembic.ini .
+COPY startup.sh .
+
+COPY ./app /rescue/app
 
 # Run alembic configuration
 CMD ["./startup.sh"]
-
-COPY ./app /rescue/app
