@@ -1,9 +1,9 @@
 #!/bin/sh
 
-while ! pg_isready 
+while ! pg_isready -h "db" -p 5432
 do
     echo "$(date) - waiting for database to start"
-    sleep 10
+    sleep 5
 done
 
 # # Run all migrations on the database.
