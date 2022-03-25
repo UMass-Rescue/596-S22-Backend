@@ -21,6 +21,10 @@ Backend Repo for 596RL Spring 2022
 - SQLAlchemy  (Locally for database manipulation)
 ```
 
+### 🤝 How to Run the Package in Another Repo
+To learn how to run the backend in YOUR repo, follow this [guide](https://www.notion.so/Setting-Up-Backend-Docker-Container-dd2ce1e805e84b44a245991c96d46591) here.
+
+
 ### 👀 Configuring Secrets
 To successfully connect to the database, we use a `.env` file, which you will need to generate using:
 `touch .env` in the backend directory. This is an untracked file in our repo. Here you will need to paste in the secrets of the backend. DM Sam DuBois and he will send you the file.
@@ -32,7 +36,6 @@ POSTGRES_PASSWORD=
 POSTGRES_DB=
 ```
 
-
 ### 🚀 How to Run the Container
 
 This repo uses Docker to containerize any processes used. In order to the run the repo, it is advised that you install docker.
@@ -41,8 +44,8 @@ Make sure the Docker and the postgresSQL library are working.
 
 From there, all you need to do to run the container is:
 ```
-docker-compose up -d --build
-docker-compose up
+docker compose build
+docker compose up
 ```
 
 ### 🧪 Useful Tools for Debugging and Testing
