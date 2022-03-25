@@ -4,6 +4,8 @@ WORKDIR /rescue
 
 COPY requirements.txt requirements.txt
 
+RUN apt-get update && apt-get install -f -y postgresql-client
+
 RUN pip install --no-cache-dir --upgrade -r /rescue/requirements.txt
 
 COPY alembic/ ./alembic/
