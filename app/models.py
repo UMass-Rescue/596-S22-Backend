@@ -54,3 +54,52 @@ class RecognizedPlate(Base):
     footage_id = Column(Integer, ForeignKey("license_footage.id"))
 
     footage = relationship("LicenseFootage", back_populates="recognized_plates")
+
+class Interview(Base):
+    __tablename__ = "interview"
+
+    id = Column(Integer, primary_key=True, index=True)
+    filename = Column(String, index=True)
+    full_name = Column(String, index=True)
+    created_at = Column(TIMESTAMP(timezone=False))
+    address = Column(String, index=True)
+    case = Column(Integer, ForeignKey("license_footage.id"))
+    full_text = Column(String, index=True)
+
+    interview = relationship("Interview", back_populates="interview")
+
+class Question_Answer_Pair(Base):
+    __tablename__ = "question_answer_pair"
+
+    id = Column(Integer, primary_key=True, index=True)
+    interview_id = Column(Integer, ForeignKey("interview.id")) ##Please check if this is correct
+    question = Column(String, index=True)
+    answer = Column(String, index=True)
+
+    question_answer_pair = relationship("Question_Answer_Pair", back_populates="question_answer_pair")
+
+class Question(Base):
+    __tablename__ = "question"
+
+    case = Column(Integer, index=True)
+    question = Column(String, index=True)
+
+question = relationship("Question", back_populates="question")
+
+class Additional_Question(Base):
+    __tablename__ = "additional_question"
+
+    interview_id = Column(Integer, ForeignKey("interview.id")) ##Please check if this is correct
+    question = Column(String, index=True)
+
+    additional_question = relationship("Additional_Question", back_populates="additional_question")
+
+class Answer_NER(Base):
+    __tablename__ = "answer_ner"
+
+    question_answer_pair_id = Column(Integer, ForeignKey("question_answer_pair.id")) ##Please check if this is correct
+    ner_label = Column(String, index=True)
+    start_index = Column(Integer, index=True)
+    end_index = Column(Integer, index=True)
+
+    answer_ner = relationship("Answer_NER", back_populates="answer_ner")
