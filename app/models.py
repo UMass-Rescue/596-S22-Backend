@@ -12,6 +12,8 @@ class Case(Base):
     end_date = Column(TIMESTAMP(timezone=False))
     is_active = Column(Boolean, default=True)
 
+    blobs = relationship("Blob", back_populates="case")
+
 class User(Base):
     __tablename__ = "users"
 
@@ -62,3 +64,17 @@ class RecognizedPlate(Base):
     footage_id = Column(Integer, ForeignKey("license_footage.id"))
 
     footage = relationship("LicenseFootage", back_populates="recognized_plates")
+
+class Blob(Base):
+    __tablename__ = "blobs"
+
+    id = Column(Integer, primary_key=True, index=True)
+    type = Column(String, index=True)
+    date_uploaded = Column(TIMESTAMP(timezone=False), nullable=False, default=datetime.now())
+    description = Column(String)
+    key = Column(String, index=True)
+    file_type = Column(String, index=True)
+    case_id = Column(Integer, ForeignKey("cases.id"))
+
+    case = relationship("Case", back_populates="blobs")
+
