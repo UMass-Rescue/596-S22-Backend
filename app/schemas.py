@@ -98,3 +98,27 @@ class LicenseFootage(LicenseFootageBase):
 
     class Config:
         orm_mode = True
+
+############## Blob Schema ######################
+
+class BlobBase(BaseModel):
+    key: str
+    file_type: str
+    description: str
+    case_id: int
+
+class CreateBlob(BlobBase):
+    pass
+
+class Blob(BaseModel):
+    id: int
+    key: str
+    file_type: str
+    description: str
+    case_id: int
+    date_uploaded = datetime.now()
+
+    class Config:
+        orm_mode = True
+
+

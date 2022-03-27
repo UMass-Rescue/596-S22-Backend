@@ -69,7 +69,6 @@ class Blob(Base):
     __tablename__ = "blobs"
 
     id = Column(Integer, primary_key=True, index=True)
-    type = Column(String, index=True)
     date_uploaded = Column(TIMESTAMP(timezone=False), nullable=False, default=datetime.now())
     description = Column(String)
     key = Column(String, index=True)
