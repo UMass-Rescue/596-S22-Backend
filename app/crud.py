@@ -134,3 +134,17 @@ def get_footage_for_plate_id(license_plate_number: str, db: Session, skip: int =
             data[plate.footage_id] = db.query(models.LicenseFootage).filter(models.LicenseFootage.id == plate.footage_id).offset(skip).limit(limit).all()[0]
 
     return list(data.values())
+
+################## BLOB CRUDS #########################
+
+# Get all blobs with case id
+def get_all_blobs_for_case(case: int, db: Session, skip: int = 0, limit: int = 0):
+    return db.query(models.Blob).filter(models.Blob.case_id == case).offset(skip).limit(limit).all()
+
+# Create blob object and upload to database
+def create_blob_with(case: int, blob: schemas.CreateBlob, db: Session):
+    db_blob = models.Blob(key=blob.key, file_type=blob.file_type, description=blob.description, case_id=case)
+    db.add(db_blob)
+    db.commit()
+    db.refresh(db_blob)
+    return db_blob
