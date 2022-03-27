@@ -5,7 +5,7 @@ from sqlalchemy.orm import relationship
 from .database import Base
 
 class Case(Base):
-    __tablename__ = "case"
+    __tablename__ = "cases"
 
     id = Column(Integer, primary_key=True, index=True)
     start_date = Column(TIMESTAMP(timezone=False), nullable=False, default=datetime.now())
