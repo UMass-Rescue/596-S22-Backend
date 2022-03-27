@@ -6,6 +6,13 @@ from xmlrpc.client import DateTime
 from pydantic import BaseModel
 from sqlalchemy import TIMESTAMP, true
 
+# Case Models
+class Case(BaseModel):
+    id: int
+    start_date: datetime
+    end_date: datetime
+    is_active: bool
+
 # Item Models
 class ItemBase(BaseModel):
     title: str
@@ -53,6 +60,7 @@ class Message(BaseModel):
         orm_mode = True
 
 ######### Recognized Plates ###############
+
 class RecognizedPlate(BaseModel):
     id: int
     license: str
