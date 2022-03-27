@@ -102,3 +102,8 @@ def get_plates_for_footage_id(footage_id: int, skip: int = 0, limit: int= 100, d
 def get_footage_for_plate_id(license_plate_number: str, skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
     footage = crud.get_footage_for_plate_id(license_plate_number=license_plate_number, skip=skip, limit=limit, db=db)
     return footage
+
+# Route - GET - get all blobs on server for case number
+def get_blobs_for_case(case: int, skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
+    cases = crud.get_all_blobs_for_case(case=case, skip=skip, limit=limit, db=db)
+    return cases
