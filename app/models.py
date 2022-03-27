@@ -8,7 +8,7 @@ class Case(Base):
     __tablename__ = "case"
 
     id = Column(Integer, primary_key=True, index=True)
-    startDate = Column(TIMESTAMP(timezone=False), nullable=False, default=datetime.now())
+    start_date = Column(TIMESTAMP(timezone=False), nullable=False, default=datetime.now())
     endDate = Column(TIMESTAMP(timezone=False))
     is_active = Column(Boolean, default=True)
 

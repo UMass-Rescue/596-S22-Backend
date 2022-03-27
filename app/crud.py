@@ -1,9 +1,18 @@
+from datetime import datetime
 from email import message
 from statistics import mode
 from sqlalchemy.orm import Session
 import os
 
 from . import models, schemas
+
+# Create Case
+def create_case(db: Session):
+    db_case = models.Case(start_date=datetime.now())
+    db.add(db_case)
+    db.commit()
+    db.refresh(db_case)
+    return db_case
 
 # Get User for User ID
 def get_user(db: Session, user_id: int):
