@@ -9,7 +9,7 @@ class Case(Base):
 
     id = Column(Integer, primary_key=True, index=True)
     start_date = Column(TIMESTAMP(timezone=False), nullable=False, default=datetime.now())
-    endDate = Column(TIMESTAMP(timezone=False))
+    end_date = Column(TIMESTAMP(timezone=False))
     is_active = Column(Boolean, default=True)
 
 class User(Base):

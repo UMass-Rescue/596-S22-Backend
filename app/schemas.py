@@ -10,8 +10,11 @@ from sqlalchemy import TIMESTAMP, true
 class Case(BaseModel):
     id: int
     start_date: datetime
-    end_date: datetime
+    end_date: Optional[datetime]
     is_active: bool
+
+    class Config:
+        orm_mode = True
 
 # Item Models
 class ItemBase(BaseModel):

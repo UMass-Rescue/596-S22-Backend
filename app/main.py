@@ -24,7 +24,7 @@ def read_root():
 
 @app.post("/cases/", response_model=schemas.Case)
 def create_case(db: Session = Depends(get_db)):
-    return crud.create_case(db)
+    return crud.create_case(db=db)
 
 # Route - POST - Create User
 @app.post("/users/", response_model=schemas.User)
