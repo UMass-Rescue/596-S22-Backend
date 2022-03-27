@@ -105,7 +105,6 @@ class BlobBase(BaseModel):
     key: str
     file_type: str
     description: str
-    case_id: int
 
 class CreateBlob(BlobBase):
     pass

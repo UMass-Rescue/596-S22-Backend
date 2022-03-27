@@ -82,11 +82,6 @@ def reader_messages_for_user(user_id: int, skip: int = 0, limit: int = 100, db: 
 def create_message(message: schemas.MessageCreate, db: Session = Depends(get_db)):
     return crud.create_message(db=db, message=message)
 
-# # Route - POST - Create a license footage object for a provided link
-# @app.post("/licenses/", response_model=schemas.CreateLicenseFootage)
-# def create_license_footage(license_footage: schemas.CreateLicenseFootage, db:Session = Depends(get_db)):
-#     return crud.create_license_footage_with_link(license_footage=license_footage, db=db)
-
 # Route - POST - Create a license footage object and add plates for json object
 @app.post("/licenses/", response_model=schemas.LicenseFootage)
 def create_license_footage(license_footage: schemas.CreateLicenseFootageObj, db:Session = Depends(get_db)):
@@ -104,6 +99,12 @@ def get_footage_for_plate_id(license_plate_number: str, skip: int = 0, limit: in
     return footage
 
 # Route - GET - get all blobs on server for case number
+@app.get("/{case}/blobs", response_model=List[schemas.Blob])
 def get_blobs_for_case(case: int, skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
     cases = crud.get_all_blobs_for_case(case=case, skip=skip, limit=limit, db=db)
     return cases
+
+# Route - POST - create blob with blobCreate and Case No.
+@app.post("/{case}/blobs", response_model=schemas.Blob)
+def create_blob_with(case: int, blob: schemas.CreateBlob, db: Session = Depends(get_db)):
+    return crud.create_blob(db=db, case=case, blob=blob)
