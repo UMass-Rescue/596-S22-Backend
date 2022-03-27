@@ -4,6 +4,14 @@ from sqlalchemy.orm import relationship
 
 from .database import Base
 
+class Case(Base):
+    __tablename__ = "case"
+
+    id = Column(Integer, primary_key=True, index=True)
+    startDate = Column(TIMESTAMP(timezone=False), nullable=False, default=datetime.now())
+    endDate = Column(TIMESTAMP(timezone=False))
+    is_active = Column(Boolean, default=True)
+
 class User(Base):
     __tablename__ = "users"
 
