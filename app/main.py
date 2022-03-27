@@ -22,9 +22,15 @@ def get_db():
 def read_root():
     return {"Rescue" : "Backend"}
 
+# Route - POST - Create new Case
 @app.post("/cases/", response_model=schemas.Case)
 def create_case(db: Session = Depends(get_db)):
     return crud.create_case(db=db)
+
+# Route - GET - get all cases
+@app.get("/cases/", response_model=schemas.Case)
+def get_all_cases(db: Session = Depends(get_db)):
+    return crud.get_all_cases(db=db)
 
 # Route - POST - Create User
 @app.post("/users/", response_model=schemas.User)
