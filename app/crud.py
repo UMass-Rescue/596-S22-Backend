@@ -12,7 +12,12 @@ def create_case(db: Session):
     db.add(db_case)
     db.commit()
     db.refresh(db_case)
+    print(db_case.end_date)
     return db_case
+
+# Get all cases available
+def get_all_cases(db: Session, skip: int = 0, limit: int = 100):
+    return db.query(models.Case).offset(skip).limit(limit).all()
 
 # Get User for User ID
 def get_user(db: Session, user_id: int):
