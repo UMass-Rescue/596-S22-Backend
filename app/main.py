@@ -107,4 +107,4 @@ def get_blobs_for_case(case: int, skip: int = 0, limit: int = 100, db: Session =
 # Route - POST - create blob with blobCreate and Case No.
 @app.post("/{case}/blobs", response_model=schemas.Blob)
 def create_blob_with(case: int, blob: schemas.CreateBlob, db: Session = Depends(get_db)):
-    return crud.create_blob(db=db, case=case, blob=blob)
+    return crud.create_blob_with(db=db, case=case, blob=blob)
