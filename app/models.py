@@ -13,6 +13,7 @@ class Case(Base):
     is_active = Column(Boolean, default=True)
 
     blobs = relationship("Blob", back_populates="case")
+    questions = relationship("Question", back_populates="case")
 
 class User(Base):
     __tablename__ = "users"
@@ -77,3 +78,11 @@ class Blob(Base):
 
     case = relationship("Case", back_populates="blobs")
 
+class Question(Base):
+    __tablename__ = "questions"
+
+    id = Column(Integer, primary_key=True, index=True)
+    text = Column(String)
+    case_id = Column(Integer, ForeignKey("cases.id"))
+
+    case = relationship("Case", back_populates="questions")
