@@ -150,6 +150,7 @@ class InterviewAnswerNER(BaseModel):
         orm_mode = True
 
 class CreateInterviewAnswer(BaseModel):
+    question_id: int
     answer: str
 
 class InterviewAnswer(BaseModel):
@@ -160,3 +161,5 @@ class InterviewAnswer(BaseModel):
 
     class Config:
         orm_mode = True
+
+class CreateInterview(BaseModel):

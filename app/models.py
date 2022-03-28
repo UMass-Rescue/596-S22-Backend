@@ -99,6 +99,7 @@ class Interview(Base):
     case_id = Column(Integer, ForeignKey("cases.id"))
 
     case = relationship("Case", back_populates="interviews")
+    interview_answers = relationship("InterviewAnswers", backpopulates="interviews")
 
 class InterviewAnswer(Base):
     __tablename__ = "interview_answers"
