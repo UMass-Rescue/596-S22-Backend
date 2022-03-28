@@ -161,3 +161,25 @@ def create_question_with(case: int, question: schemas.CreateQuestion, db: Sessio
 def get_questions_for(case: int, db: Session, skip: int = 0, limit: int = 0):
     return db.query(models.Question).filter(models.Question.case_id == case).offset(skip).limit(limit).all()
 
+def create_interview_with(case: int, db: Session, interview: schemas.CreateInterview):
+    # Create Interview
+    db_interview = models.Interview(first_name=interview.first_name, last_name=interview.last_name, address=interview.address, case_id=case)
+    db.add(db_interview)
+    db.commit()
+    db.refresh(db_interview)
+
+    # Create Interview Answer Objects
+    for interviewAnswer in interview.interview_answers:
+        db_interview_answer = models.InterviewAnswer(answer=interviewAnswer.answer, question_id=interviewAnswer.question_id, interview_id=db_interview.id)
+        db.add(db_interview_answer)
+        db.commit()
+        db.refresh(db_interview_answer)
+
+        # Create Interview Answer NER Objects
+        for interviewAnswerNER in interviewAnswer.interview_answer_ners:
+            db_interview_answer_ner = models.InterviewAnswerNER(label=interviewAnswerNER.label, start_index=interviewAnswerNER.start_index, end_index=interviewAnswerNER.end_index, interview_answer_id=db_interview_answer.id)
+            db.add(db_interview_answer_ner)
+            db.commit()
+            db.refresh(db_interview_answer_ner)
+
+    return db_interview

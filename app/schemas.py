@@ -136,13 +136,13 @@ class Question(BaseModel):
         orm_mode = True
 
 class CreateInterviewAnswerNER(BaseModel):
-    ner_label: str
+    label: str
     start_index: int
     end_index: int
 
 class InterviewAnswerNER(BaseModel):
     id: int
-    ner_label: str
+    label: str
     start_index: int
     end_index: int
     interview_answer_id:  int
@@ -153,7 +153,7 @@ class InterviewAnswerNER(BaseModel):
 class CreateInterviewAnswer(BaseModel):
     question_id: int
     answer: str
-    interview_answer_ners: List[InterviewAnswerNER] = []
+    interview_answer_ners: List[CreateInterviewAnswerNER] = []
 
 class InterviewAnswer(BaseModel):
     id: int
@@ -168,7 +168,7 @@ class CreateInterview(BaseModel):
     first_name: str
     last_name: str
     address: str
-    interview_answers: List[InterviewAnswer] = []
+    interview_answers: List[CreateInterviewAnswer] = []
 
 class Interview(BaseModel):
     id: int
