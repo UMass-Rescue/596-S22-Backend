@@ -148,3 +148,15 @@ class InterviewAnswerNER(BaseModel):
 
     class Config:
         orm_mode = True
+
+class CreateInterviewAnswer(BaseModel):
+    answer: str
+
+class InterviewAnswer(BaseModel):
+    id: int
+    answer: str
+    question_id: int
+    interview_id: int
+
+    class Config:
+        orm_mode = True
