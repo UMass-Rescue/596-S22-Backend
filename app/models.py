@@ -113,7 +113,7 @@ class InterviewAnswer(Base):
     question = relationship("Question", back_populates="interview_answers")
     interview = relationship("Interview", back_populates="interview_answers")
 
-    interview_answer_ners = relationship("InterviewAnswerNER", back_populates="interview_answers")
+    interview_answer_ners = relationship("InterviewAnswerNER", back_populates="interview_answer")
 
 class InterviewAnswerNER(Base):
     __tablename__ = "interview_answer_ners"
@@ -124,5 +124,5 @@ class InterviewAnswerNER(Base):
     end_index = Column(Integer)
     interview_answer_id = Column(Integer, ForeignKey("interview_answers.id"))
 
-    interview_answer = relationship("InterviewAnswers", back_populates="interview_answer_ners")
+    interview_answer = relationship("InterviewAnswer", back_populates="interview_answer_ners")
 
