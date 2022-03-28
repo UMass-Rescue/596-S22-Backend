@@ -119,3 +119,8 @@ def create_question_with(case: int, question: schemas.CreateQuestion, db: Sessio
 def get_questions_for(case: int, db: Session = Depends(get_db), skip: int = 0, limit: int = 100):
     questions = crud.get_questions_for(case=case, db=db, skip=skip, limit=limit)
     return questions
+
+# Route - POST 
+@app.post("/{case}/interviews", resposne_model=List[schemas.Interview])
+def create_interview_with(case: int, interview: schemas.CreateInterview, db: Session = Depends(get_db)):
+    return crud.create_interview_with(case=case, db=db, interview=interview)
