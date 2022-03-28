@@ -123,11 +123,8 @@ class Blob(BaseModel):
 
 ############## Interview Analyzer Schemas ###############
 
-class QuestionBase(BaseModel):
+class CreateQuestion(BaseModel):
     text: str
-
-class CreateQuestion(QuestionBase):
-    pass
 
 class Question(BaseModel):
     id: int
@@ -137,4 +134,17 @@ class Question(BaseModel):
     class Config:
         orm_mode = True
 
+class CreateInterviewAnswerNER(BaseModel):
+    ner_label: str
+    start_index: int
+    end_index: int
 
+class InterviewAnswerNER(BaseModel):
+    id: int
+    ner_label: str
+    start_index: int
+    end_index: int
+    interview_answer_id:  int
+
+    class Config:
+        orm_mode = True
