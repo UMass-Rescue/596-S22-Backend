@@ -14,6 +14,7 @@ class Case(Base):
 
     blobs = relationship("Blob", back_populates="case")
     questions = relationship("Question", back_populates="case")
+    interviews = relationship("Interview", back_populates="case")
 
 class User(Base):
     __tablename__ = "users"
@@ -83,6 +84,18 @@ class Question(Base):
 
     id = Column(Integer, primary_key=True, index=True)
     text = Column(String)
+    case_id = Column(Integer, ForeignKey("cases.id"))
+
+    case = relationship("Case", back_populates="questions")
+
+class Interview(Base):
+    __tablename__ = "interviews"
+
+    id = Column(Integer, primary_key=True, index=True)
+    first_name = Column(String, index=True)
+    last_name = Column(String, index=True)
+    date_uploaded = Column(TIMESTAMP(timezone=False), nullable=False, default=datetime.now())
+    address = Column(String)
     case_id = Column(Integer, ForeignKey("cases.id"))
 
     case = relationship("Case", back_populates="questions")
