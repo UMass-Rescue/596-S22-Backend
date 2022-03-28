@@ -118,7 +118,7 @@ class InterviewAnswerNER(Base):
     __tablename__ = "interview_answer_ners"
 
     id = Column(Integer, primary_key=True, index=True)
-    ner_label = Column(String)
+    label = Column(String)
     start_index = Column(Integer)
     end_index = Column(Integer)
     interview_answer_id = Column(Integer, ForeignKey("interview_answers.id"))
