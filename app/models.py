@@ -98,4 +98,20 @@ class Interview(Base):
     address = Column(String)
     case_id = Column(Integer, ForeignKey("cases.id"))
 
-    case = relationship("Case", back_populates="questions")
+    case = relationship("Case", back_populates="interviews")
+
+class InterviewAnswer(Base):
+    __tablename__ = "interview_answers"
+
+    id = Column(Integer, primary_key=True, index=True)
+    answer = Column(String)
+    question_id = Column(Integer, ForeignKey("questions.id"))
+    interview_id = Column(Integer, ForeignKey("interviews.id"))
+
+    question = relationship("Question", back_populates="interview_answers")
+    interview = relationship("Interview", back_populates="interview_answers")
+
+class InterviewAnswerNER(Base):
+    __tablename__ = "interview_answer_ners"
+
+    id = 
