@@ -182,5 +182,4 @@ def create_interview_with(case: int, db: Session, interview: schemas.CreateInter
             db.commit()
             db.refresh(db_interview_answer_ner)
 
-    print("WE GOT TO HERE AT LEAST YAAYY")
     return db_interview
