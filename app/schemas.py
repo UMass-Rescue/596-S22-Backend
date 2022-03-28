@@ -152,6 +152,7 @@ class InterviewAnswerNER(BaseModel):
 class CreateInterviewAnswer(BaseModel):
     question_id: int
     answer: str
+    interview_answer_ners: List[InterviewAnswerNER] = []
 
 class InterviewAnswer(BaseModel):
     id: int
@@ -163,3 +164,5 @@ class InterviewAnswer(BaseModel):
         orm_mode = True
 
 class CreateInterview(BaseModel):
+    first_name: str
+    last_name: str
