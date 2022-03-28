@@ -1,5 +1,6 @@
 from datetime import datetime
 from fileinput import filename
+from re import S
 from sqlite3 import Timestamp
 from typing import List, Optional, Dict
 from xmlrpc.client import DateTime
@@ -166,3 +167,16 @@ class InterviewAnswer(BaseModel):
 class CreateInterview(BaseModel):
     first_name: str
     last_name: str
+    address: str
+    interview_answers: List[InterviewAnswer] = []
+
+class Interview(BaseModel):
+    id: int
+    first_name: str
+    last_name: str
+    date_uploaded: datetime = datetime.now()
+    address: str
+    case_id: int
+
+    class Config:
+        orm_mode = True
