@@ -109,6 +109,13 @@ def get_blobs_for_case(case: int, skip: int = 0, limit: int = 100, db: Session =
 def create_blob_with(case: int, blob: schemas.CreateBlob, db: Session = Depends(get_db)):
     return crud.create_blob_with(db=db, case=case, blob=blob)
 
+# Route - POST - create question with QuestionCreate and Case No.
 @app.post("/{case}/questions", response_model=schemas.Question)
 def create_question_with(case: int, question: schemas.CreateQuestion, db: Session = Depends(get_db)):
     return crud.create_question_with(db=db, case=case, question=question)
+
+# Route - GET - get all cases for a specific Case No.
+@app.get("/{case}/questions", response_model=List[schemas.Question])
+def get_questions_for(case: int, db: Session = Depends(get_db), skip: int = 0, limit: int = 100):
+    questions = crud.get_questions_for(case=case, db=db, skip=skip, limit=limit)
+    return questions
