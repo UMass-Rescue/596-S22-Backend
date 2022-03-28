@@ -3,6 +3,7 @@ from fileinput import filename
 from sqlite3 import Timestamp
 from typing import List, Optional, Dict
 from xmlrpc.client import DateTime
+from app.models import Question
 from pydantic import BaseModel
 from sqlalchemy import TIMESTAMP, true
 
@@ -116,6 +117,22 @@ class Blob(BaseModel):
     description: str
     case_id: int
     date_uploaded = datetime.now()
+
+    class Config:
+        orm_mode = True
+
+############## Interview Analyzer Schemas ###############
+
+class QuestionBase(BaseModel):
+    text: str
+
+class CreateQuestion(QuestionBase):
+    pass
+
+class Question(BaseModel):
+    id: int
+    text: str
+    case_id: int
 
     class Config:
         orm_mode = True
