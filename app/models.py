@@ -87,6 +87,7 @@ class Question(Base):
     case_id = Column(Integer, ForeignKey("cases.id"))
 
     case = relationship("Case", back_populates="questions")
+    interview_answers = relationship("InterviewAnswer", back_populates="question")
 
 class Interview(Base):
     __tablename__ = "interviews"
@@ -99,7 +100,7 @@ class Interview(Base):
     case_id = Column(Integer, ForeignKey("cases.id"))
 
     case = relationship("Case", back_populates="interviews")
-    interview_answers = relationship("InterviewAnswers", back_populates="interviews")
+    interview_answers = relationship("InterviewAnswer", back_populates="interview")
 
 class InterviewAnswer(Base):
     __tablename__ = "interview_answers"
