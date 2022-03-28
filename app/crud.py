@@ -152,7 +152,7 @@ def create_blob_with(case: int, blob: schemas.CreateBlob, db: Session):
 ############ INTERVIEW QUESTION CRUDS ###################
 
 def create_question_with(case: int, question: schemas.CreateQuestion, db: Session):
-    db_question = models.Question(case=case, text=question.text)
+    db_question = models.Question(case_id=case, text=question.text)
     db.add(db_question)
     db.commit()
     db.refresh(db_question)
@@ -160,3 +160,4 @@ def create_question_with(case: int, question: schemas.CreateQuestion, db: Sessio
 
 def get_questions_for(case: int, db: Session, skip: int = 0, limit: int = 0):
     return db.query(models.Question).filter(models.Question.case_id == case).offset(skip).limit(limit).all()
+
