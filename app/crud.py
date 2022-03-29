@@ -188,4 +188,7 @@ def get_interview_for(case: int, db: Session, skip: int = 0, limit: int = 0):
     return db.query(models.Interview).filter(models.Interview.case_id == case).offset(skip).limit(limit).all()
 
 def get_interview_answers_for(interview_id: int, db: Session, skip: int = 0, limit: int = 0):
-    return db.query(models.InterviewAnswer).filter(models.Interview.id == interview_id).offset(skip).limit(limit).all()
+    return db.query(models.InterviewAnswer).filter(models.InterviewAnswer.interview_id == interview_id).offset(skip).limit(limit).all()
+
+def get_interview_answer_ners_for(answer_id: int, db: Session, skip: int = 0, limit: int = 0):
+    return db.query(models.InterviewAnswerNER).filter(models.InterviewAnswerNER.interview_answer_id == answer_id).offset(skip).limit(limit).all()
