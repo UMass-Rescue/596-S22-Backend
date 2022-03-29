@@ -133,6 +133,6 @@ def get_interview_for(case: int, db: Session = Depends(get_db), skip: int = 0, l
 def get_interview_answers_for(interview_id: int, db: Session = Depends(get_db), skip: int = 0, limit: int = 100):
     return crud.get_interview_answers_for(interview_id=interview_id, db=db, skip=skip, limit=limit)
 
-@app.get("/interviews/answers/{answer_id}", response_model=List[schemas.InterviewAnswerNER])
+@app.get("/interviews/answers/{answer_id}/ners", response_model=List[schemas.InterviewAnswerNER])
 def get_interview_answers_for(answer_id: int, db: Session = Depends(get_db), skip: int = 0, limit: int = 100):
     return crud.get_interview_answer_ners_for(answer_id=answer_id, db=db, skip=skip, limit=limit)
