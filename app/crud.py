@@ -163,7 +163,9 @@ def get_questions_for(case: int, db: Session, skip: int = 0, limit: int = 0):
 
 def create_interview_shell_for(case: int, db: Session, interviewShell: schemas.CreateInterviewShell):
     # Create interview
-    db_interview = models.Interview(blob_key_id=interviewShell.blob_key_id, first_name=interviewShell.first_name, last_name=interviewShell.last_name, address=interviewShell.address, case_id=case)
+    db_interview = models.Interview(blob_id=interviewShell.blob_id, first_name=interviewShell.first_name, last_name=interviewShell.last_name, address=interviewShell.address, case_id=case)
+
+
     
 
 

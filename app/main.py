@@ -123,7 +123,7 @@ def get_questions_for(case: int, db: Session = Depends(get_db), skip: int = 0, l
 # Route - POST - Create Interview for Case No.
 @app.post("/{case}/interviews", response_model=schemas.Interview)
 def create_interview_with(case: int, interview: schemas.CreateInterview, db: Session = Depends(get_db)):
-    return crud.create_interview_with(case=case, db=db, interview=interview)
+    return crud.create_interview_shell_for(case=case, db=db, interview=interview)
 
 # Route - GET - Get all interviews for a Case No.
 @app.get("/{case}/interviews", response_model=List[schemas.Interview])

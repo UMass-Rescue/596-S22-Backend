@@ -168,7 +168,7 @@ class CreateInterviewShell(BaseModel):
     first_name: str
     last_name: str
     address: str
-    blob_key_id: str
+    blob_id: str
 
 class CreateInterview(BaseModel):
     first_name: str
