@@ -161,6 +161,11 @@ def create_question_with(case: int, question: schemas.CreateQuestion, db: Sessio
 def get_questions_for(case: int, db: Session, skip: int = 0, limit: int = 0):
     return db.query(models.Question).filter(models.Question.case_id == case).offset(skip).limit(limit).all()
 
+def create_interview_shell_for(case: int, db: Session, interviewShell: schemas.CreateInterviewShell):
+    # Create interview
+    db_interview = models.Interview(blob_key_id=interviewShell.blob_key_id, first_name=interviewShell.first_name, last_name=interviewShell.last_name, address=interviewShell.address, case_id=case)
+
+
 def create_interview_with(case: int, db: Session, interview: schemas.CreateInterview):
     # Create Interview
     db_interview = models.Interview(first_name=interview.first_name, last_name=interview.last_name, address=interview.address, case_id=case)

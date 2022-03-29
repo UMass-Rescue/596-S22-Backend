@@ -164,6 +164,12 @@ class InterviewAnswer(BaseModel):
     class Config:
         orm_mode = True
 
+class CreateInterviewShell(BaseModel):
+    first_name: str
+    last_name: str
+    address: str
+    blob_key_id: str
+
 class CreateInterview(BaseModel):
     first_name: str
     last_name: str
@@ -172,6 +178,7 @@ class CreateInterview(BaseModel):
 
 class Interview(BaseModel):
     id: int
+    blob_key_id: int
     first_name: str
     last_name: str
     date_uploaded: datetime = datetime.now()
