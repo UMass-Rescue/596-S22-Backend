@@ -4,7 +4,7 @@ from statistics import mode
 from sqlalchemy.orm import Session
 from fastapi import  HTTPException
 import os
-import request
+import requests
 
 from . import models, schemas
 
@@ -177,7 +177,7 @@ def create_interview_shell_for(case: int, db: Session, interviewShell: schemas.C
     transcriber_obj = schemas.TranscriberObj(blob=blob, questions=questions, interview=db_interview)
 
     # Send Transcriber obj to service
-    result = request.post("www.localhost:8000/sendTranscription/", data=transcriber_obj)
+    result = requests.post("www.localhost:8000/sendTranscription/", data=transcriber_obj)
 
     if result.status_code > 400:
         raise HTTPException(status_code=404, detail="Unable to send to transcriber")
