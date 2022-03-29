@@ -183,3 +183,9 @@ def create_interview_with(case: int, db: Session, interview: schemas.CreateInter
             db.refresh(db_interview_answer_ner)
 
     return db_interview
+
+def get_interview_for(case: int, db: Session, skip: int = 0, limit: int = 0):
+    return db.query(models.Interview).filter(models.Interview.case_id == case).offset(skip).limit(limit).all()
+
+def get_interview_answers_for(interview_id: int, db: Session, skip: int = 0, limit: int = 0):
+    return db.query(models.InterviewAnswer).filter(models.Interview.id == interview_id).offset(skip).limit(limit).all()

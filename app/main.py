@@ -124,3 +124,11 @@ def get_questions_for(case: int, db: Session = Depends(get_db), skip: int = 0, l
 @app.post("/{case}/interviews", response_model=schemas.Interview)
 def create_interview_with(case: int, interview: schemas.CreateInterview, db: Session = Depends(get_db)):
     return crud.create_interview_with(case=case, db=db, interview=interview)
+
+@app.get("/{case}/interviews", response_model=List[schemas.Interview])
+def get_interview_for(case: int, db: Session = Depends(get_db), skip: int = 0, limit: int = 100):
+    return crud.get_interview_for(case=case, db=db, skip=skip, limit=limit)
+
+app.get("/interviews/{interview_id}/answers", response_model=List[schemas.InterviewAnswer])
+def get_interview_answers_for(interview_id: int, db: Session = Depends(get_db), skip: int = 0, limit: int = 100):
+    return crud.get_interview_answers_for(interview_id=interview_id, db=db, skip=skip, limit=limit)
