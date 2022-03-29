@@ -184,6 +184,9 @@ def create_interview_shell_for(case: int, db: Session, interviewShell: schemas.C
     
     return db_interview
 
+def patch_interview_shell_for(case: int, db: Session, interview: schemas.Interview):
+    pass
+
 def create_interview_with(case: int, db: Session, interview: schemas.CreateInterview):
     # Create Interview
     db_interview = models.Interview(first_name=interview.first_name, last_name=interview.last_name, address=interview.address, case_id=case)
