@@ -1,4 +1,5 @@
 from datetime import datetime
+from email.policy import default
 from sqlalchemy import TIMESTAMP, Boolean, Column, ForeignKey, Integer, String, Date
 from sqlalchemy.orm import relationship
 
@@ -95,6 +96,7 @@ class Interview(Base):
 
     id = Column(Integer, primary_key=True, index=True)
     blob_id = Column(Integer, ForeignKey("blobs.id"))
+    is_processed = Column(Integer, default=False)
     first_name = Column(String, index=True)
     last_name = Column(String, index=True)
     date_uploaded = Column(TIMESTAMP(timezone=False), nullable=False, default=datetime.now())
