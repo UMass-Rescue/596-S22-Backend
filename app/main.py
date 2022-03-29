@@ -120,19 +120,22 @@ def get_questions_for(case: int, db: Session = Depends(get_db), skip: int = 0, l
     questions = crud.get_questions_for(case=case, db=db, skip=skip, limit=limit)
     return questions
 
-# Route - POST 
+# Route - POST - Create Interview for Case No.
 @app.post("/{case}/interviews", response_model=schemas.Interview)
 def create_interview_with(case: int, interview: schemas.CreateInterview, db: Session = Depends(get_db)):
     return crud.create_interview_with(case=case, db=db, interview=interview)
 
+# Route - GET - Get all interviews for a Case No.
 @app.get("/{case}/interviews", response_model=List[schemas.Interview])
 def get_interview_for(case: int, db: Session = Depends(get_db), skip: int = 0, limit: int = 100):
     return crud.get_interview_for(case=case, db=db, skip=skip, limit=limit)
 
+# Route - GET - Get all interview answers for a Interview ID
 @app.get("/interviews/{interview_id}/answers", response_model=List[schemas.InterviewAnswer])
 def get_interview_answers_for(interview_id: int, db: Session = Depends(get_db), skip: int = 0, limit: int = 100):
     return crud.get_interview_answers_for(interview_id=interview_id, db=db, skip=skip, limit=limit)
 
+# Route - GET Get all interview answer NERS for an Interview Answer ID
 @app.get("/interviews/answers/{answer_id}/ners", response_model=List[schemas.InterviewAnswerNER])
 def get_interview_answers_for(answer_id: int, db: Session = Depends(get_db), skip: int = 0, limit: int = 100):
     return crud.get_interview_answer_ners_for(answer_id=answer_id, db=db, skip=skip, limit=limit)
