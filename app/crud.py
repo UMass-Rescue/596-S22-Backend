@@ -184,8 +184,8 @@ def create_interview_shell_for(case: int, db: Session, interviewShell: schemas.C
     
     return db_interview
 
-def patch_interview_for(case: int, db: Session, interview: schemas.Interview):
-    db_interview = db.query(models.Interview).get(interview.id)
+def patch_interview_for(interview_id: int, db: Session, interview: schemas.Interview):
+    db_interview = db.query(models.Interview).get(interview_id)
     db_interview = interview
     db.commit(db_interview)
     return db_interview
