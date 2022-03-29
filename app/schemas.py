@@ -168,7 +168,7 @@ class CreateInterviewShell(BaseModel):
     first_name: str
     last_name: str
     address: str
-    blob_id: str
+    blob_id: int
 
 class CreateInterview(BaseModel):
     first_name: str
@@ -187,3 +187,8 @@ class Interview(BaseModel):
 
     class Config:
         orm_mode = True
+
+class TranscriberObj(BaseModel):
+    blob: Blob
+    questions: List[Question]
+    interview: Interview
