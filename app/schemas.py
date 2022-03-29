@@ -178,7 +178,7 @@ class CreateInterview(BaseModel):
 
 class Interview(BaseModel):
     id: int
-    blob_key_id: int
+    blob_id: int
     first_name: str
     last_name: str
     date_uploaded: datetime = datetime.now()

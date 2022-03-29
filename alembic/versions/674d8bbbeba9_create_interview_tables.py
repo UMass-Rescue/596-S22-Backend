@@ -20,12 +20,14 @@ def upgrade():
     op.create_table(
         "interviews",
         sa.Column("id", sa.Integer, primary_key=True, index=True),
+        sa.Column("blob_id", sa.Integer),
         sa.Column("first_name", sa.String, index=True),
         sa.Column("last_name", sa.String, index=True),
         sa.Column("date_uploaded", sa.TIMESTAMP(), nullable=False, index=True),
         sa.Column("address", sa.String),
         sa.Column("case_id", sa.Integer),
         sa.ForeignKeyConstraint(('case_id',), ['cases.id'], ),
+        sa.ForeignKeyConstraint(('blob_id',), ['blobs.id'], ),
     )
     op.create_table(
         "interview_answers",
