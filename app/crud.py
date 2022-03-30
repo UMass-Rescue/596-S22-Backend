@@ -4,6 +4,7 @@ from statistics import mode
 from sqlalchemy.orm import Session
 from fastapi import  HTTPException
 import os
+import json
 import requests
 
 from . import models, schemas
@@ -163,6 +164,11 @@ def create_question_with(case: int, question: schemas.CreateQuestion, db: Sessio
 def get_questions_for(case: int, db: Session, skip: int = 0, limit: int = 0):
     return db.query(models.Question).filter(models.Question.case_id == case).offset(skip).limit(limit).all()
 
+# Converts JSON object to be sent via JSON
+def defaultconverter(o):
+  if isinstance(o, datetime):
+      return o.__str__()
+
 def create_interview_shell_for(case: int, db: Session, interviewShell: schemas.CreateInterviewShell):
     # Create interview
     db_interview = models.Interview(blob_id=interviewShell.blob_id, first_name=interviewShell.first_name, last_name=interviewShell.last_name, address=interviewShell.address, case_id=case)
@@ -177,14 +183,14 @@ def create_interview_shell_for(case: int, db: Session, interviewShell: schemas.C
     transcriber_obj = schemas.TranscriberObj(blob=blob, questions=questions, interview=db_interview)
 
     # Send Transcriber obj to service
-    result = requests.post("www.localhost:8000/sendTranscription/", data=transcriber_obj)
+    result = requests.post("http://localhost:8000/sendTranscription/", json=json.dumps(transcriber_obj.dict(), default = defaultconverter))
 
     if result.status_code > 400:
         raise HTTPException(status_code=404, detail="Unable to send to transcriber")
     
     return db_interview
 
-def patch_data_for_interview_with(interview_id: int, db: Session, interview: schemas.CreateInterview):
+def post_data_for_interview_with(interview_id: int, db: Session, interview: schemas.CreateInterview):
     db_interview = db.query(models.Interview).get(interview_id)
     db_interview.is_processed = True
     db.commit(db_interview)

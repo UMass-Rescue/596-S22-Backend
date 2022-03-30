@@ -122,8 +122,8 @@ def get_questions_for(case: int, db: Session = Depends(get_db), skip: int = 0, l
 
 # Route - POST - Create Interview for Case No.
 @app.post("/{case}/interviews", response_model=schemas.Interview)
-def create_interview_with(case: int, interview: schemas.CreateInterviewShell, db: Session = Depends(get_db)):
-    return crud.create_interview_shell_for(case=case, db=db, interview=interview)
+def create_interview_with(case: int, interviewShell: schemas.CreateInterviewShell, db: Session = Depends(get_db)):
+    return crud.create_interview_shell_for(case=case, db=db, interviewShell=interviewShell)
 
 # Route - POST - Post data for Interview object
 @app.post("/interviews/{interview_id}/data", response_model=schemas.Interview)

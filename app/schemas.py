@@ -193,3 +193,6 @@ class TranscriberObj(BaseModel):
     blob: Blob
     questions: List[Question]
     interview: Interview
+
+    class Config:
+        orm_mode = True
