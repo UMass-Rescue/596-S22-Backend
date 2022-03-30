@@ -183,7 +183,7 @@ def create_interview_shell_for(case: int, db: Session, interviewShell: schemas.C
     transcriber_obj = schemas.TranscriberObj(blob=blob, questions=questions, interview=db_interview)
 
     # Send Transcriber obj to service
-    result = requests.post("http://localhost:8000/sendTranscription/", json=json.dumps(transcriber_obj.dict(), default = defaultconverter))
+    result = requests.post("http://transcriber_server:8002/sendTranscription/", json=json.dumps(transcriber_obj.dict(), default = defaultconverter))
 
     if result.status_code > 400:
         raise HTTPException(status_code=404, detail="Unable to send to transcriber")
