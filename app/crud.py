@@ -2,7 +2,10 @@ from datetime import datetime
 from email import message
 from statistics import mode
 from sqlalchemy.orm import Session
+from fastapi import  HTTPException
 import os
+import json
+import requests
 
 from . import models, schemas
 
@@ -148,3 +151,94 @@ def create_blob_with(case: int, blob: schemas.CreateBlob, db: Session):
     db.commit()
     db.refresh(db_blob)
     return db_blob
+
+############ INTERVIEW QUESTION CRUDS ###################
+
+def create_question_with(case: int, question: schemas.CreateQuestion, db: Session):
+    db_question = models.Question(case_id=case, text=question.text)
+    db.add(db_question)
+    db.commit()
+    db.refresh(db_question)
+    return db_question
+
+def get_questions_for(case: int, db: Session, skip: int = 0, limit: int = 0):
+    return db.query(models.Question).filter(models.Question.case_id == case).offset(skip).limit(limit).all()
+
+# Converts JSON object to be sent via JSON
+def defaultconverter(o):
+  if isinstance(o, datetime):
+      return o.__str__()
+
+def create_interview_shell_for(case: int, db: Session, interviewShell: schemas.CreateInterviewShell):
+    # Create interview
+    db_interview = models.Interview(blob_id=interviewShell.blob_id, first_name=interviewShell.first_name, last_name=interviewShell.last_name, address=interviewShell.address, case_id=case)
+    db.add(db_interview)
+    db.commit()
+    db.refresh(db_interview)
+
+    # Create Model to send to Transcriber
+    blob = db.query(models.Blob).filter(models.Blob.id == interviewShell.blob_id).first()
+    questions = db.query(models.Question).all()
+
+    transcriber_obj = schemas.TranscriberObj(blob=blob, questions=questions, interview=db_interview)
+
+    # Send Transcriber obj to service
+    result = requests.post("http://localhost:8000/sendTranscription/", json=json.dumps(transcriber_obj.dict(), default = defaultconverter))
+
+    if result.status_code > 400:
+        raise HTTPException(status_code=404, detail="Unable to send to transcriber")
+    
+    return db_interview
+
+def post_data_for_interview_with(interview_id: int, db: Session, interview: schemas.CreateInterview):
+    db_interview = db.query(models.Interview).get(interview_id)
+    db_interview.is_processed = True
+    db.commit()
+
+    # Create Interview Answer Objects
+    for interviewAnswer in interview.interview_answers:
+        db_interview_answer = models.InterviewAnswer(answer=interviewAnswer.answer, question_id=interviewAnswer.question_id, interview_id=db_interview.id)
+        db.add(db_interview_answer)
+        db.commit()
+        db.refresh(db_interview_answer)
+
+        # Create Interview Answer NER Objects
+        for interviewAnswerNER in interviewAnswer.interview_answer_ners:
+            db_interview_answer_ner = models.InterviewAnswerNER(label=interviewAnswerNER.label, start_index=interviewAnswerNER.start_index, end_index=interviewAnswerNER.end_index, interview_answer_id=db_interview_answer.id)
+            db.add(db_interview_answer_ner)
+            db.commit()
+            db.refresh(db_interview_answer_ner)
+
+    return db_interview
+
+def create_interview_with(case: int, db: Session, interview: schemas.CreateInterview):
+    # Create Interview
+    db_interview = models.Interview(first_name=interview.first_name, last_name=interview.last_name, address=interview.address, case_id=case)
+    db.add(db_interview)
+    db.commit()
+    db.refresh(db_interview)
+
+    # Create Interview Answer Objects
+    for interviewAnswer in interview.interview_answers:
+        db_interview_answer = models.InterviewAnswer(answer=interviewAnswer.answer, question_id=interviewAnswer.question_id, interview_id=db_interview.id)
+        db.add(db_interview_answer)
+        db.commit()
+        db.refresh(db_interview_answer)
+
+        # Create Interview Answer NER Objects
+        for interviewAnswerNER in interviewAnswer.interview_answer_ners:
+            db_interview_answer_ner = models.InterviewAnswerNER(label=interviewAnswerNER.label, start_index=interviewAnswerNER.start_index, end_index=interviewAnswerNER.end_index, interview_answer_id=db_interview_answer.id)
+            db.add(db_interview_answer_ner)
+            db.commit()
+            db.refresh(db_interview_answer_ner)
+
+    return db_interview
+
+def get_interview_for(case: int, db: Session, skip: int = 0, limit: int = 0):
+    return db.query(models.Interview).filter(models.Interview.case_id == case).offset(skip).limit(limit).all()
+
+def get_interview_answers_for(interview_id: int, db: Session, skip: int = 0, limit: int = 0):
+    return db.query(models.InterviewAnswer).filter(models.InterviewAnswer.interview_id == interview_id).offset(skip).limit(limit).all()
+
+def get_interview_answer_ners_for(answer_id: int, db: Session, skip: int = 0, limit: int = 0):
+    return db.query(models.InterviewAnswerNER).filter(models.InterviewAnswerNER.interview_answer_id == answer_id).offset(skip).limit(limit).all()

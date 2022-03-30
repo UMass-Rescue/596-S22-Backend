@@ -1,4 +1,5 @@
 from datetime import datetime
+from email.policy import default
 from sqlalchemy import TIMESTAMP, Boolean, Column, ForeignKey, Integer, String, Date
 from sqlalchemy.orm import relationship
 
@@ -13,6 +14,8 @@ class Case(Base):
     is_active = Column(Boolean, default=True)
 
     blobs = relationship("Blob", back_populates="case")
+    questions = relationship("Question", back_populates="case")
+    interviews = relationship("Interview", back_populates="case")
 
 class User(Base):
     __tablename__ = "users"
@@ -76,4 +79,55 @@ class Blob(Base):
     case_id = Column(Integer, ForeignKey("cases.id"))
 
     case = relationship("Case", back_populates="blobs")
+    interview = relationship("Interview", back_populates="blob")
+
+class Question(Base):
+    __tablename__ = "questions"
+
+    id = Column(Integer, primary_key=True, index=True)
+    text = Column(String)
+    case_id = Column(Integer, ForeignKey("cases.id"))
+
+    case = relationship("Case", back_populates="questions")
+    interview_answers = relationship("InterviewAnswer", back_populates="question")
+
+class Interview(Base):
+    __tablename__ = "interviews"
+
+    id = Column(Integer, primary_key=True, index=True)
+    blob_id = Column(Integer, ForeignKey("blobs.id"))
+    is_processed = Column(Integer, default=False)
+    first_name = Column(String, index=True)
+    last_name = Column(String, index=True)
+    date_uploaded = Column(TIMESTAMP(timezone=False), nullable=False, default=datetime.now())
+    address = Column(String)
+    case_id = Column(Integer, ForeignKey("cases.id"))
+
+    blob = relationship("Blob", back_populates="interview")
+    case = relationship("Case", back_populates="interviews")
+    interview_answers = relationship("InterviewAnswer", back_populates="interview")
+
+class InterviewAnswer(Base):
+    __tablename__ = "interview_answers"
+
+    id = Column(Integer, primary_key=True, index=True)
+    answer = Column(String)
+    question_id = Column(Integer, ForeignKey("questions.id"))
+    interview_id = Column(Integer, ForeignKey("interviews.id"))
+
+    question = relationship("Question", back_populates="interview_answers")
+    interview = relationship("Interview", back_populates="interview_answers")
+
+    interview_answer_ners = relationship("InterviewAnswerNER", back_populates="interview_answer")
+
+class InterviewAnswerNER(Base):
+    __tablename__ = "interview_answer_ners"
+
+    id = Column(Integer, primary_key=True, index=True)
+    label = Column(String)
+    start_index = Column(Integer)
+    end_index = Column(Integer)
+    interview_answer_id = Column(Integer, ForeignKey("interview_answers.id"))
+
+    interview_answer = relationship("InterviewAnswer", back_populates="interview_answer_ners")
 
