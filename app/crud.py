@@ -193,7 +193,7 @@ def create_interview_shell_for(case: int, db: Session, interviewShell: schemas.C
 def post_data_for_interview_with(interview_id: int, db: Session, interview: schemas.CreateInterview):
     db_interview = db.query(models.Interview).get(interview_id)
     db_interview.is_processed = True
-    db.commit(db_interview)
+    db.commit()
 
     # Create Interview Answer Objects
     for interviewAnswer in interview.interview_answers:

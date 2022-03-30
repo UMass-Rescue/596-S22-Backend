@@ -128,7 +128,7 @@ def create_interview_with(case: int, interviewShell: schemas.CreateInterviewShel
 # Route - POST - Post data for Interview object
 @app.post("/interviews/{interview_id}/data", response_model=schemas.Interview)
 def post_data_for_interview_with(interview_id: int, interview: schemas.CreateInterview, db: Session = Depends(get_db)):
-    return crud.patch_interview_for(interview_id=interview_id, db=db, interview=interview)
+    return crud.post_data_for_interview_with(interview_id=interview_id, db=db, interview=interview)
 
 # Route - GET - Get all interviews for a Case No.
 @app.get("/{case}/interviews", response_model=List[schemas.Interview])
