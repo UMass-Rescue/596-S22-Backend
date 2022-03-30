@@ -122,12 +122,12 @@ def get_questions_for(case: int, db: Session = Depends(get_db), skip: int = 0, l
 
 # Route - POST - Create Interview for Case No.
 @app.post("/{case}/interviews", response_model=schemas.Interview)
-def create_interview_with(case: int, interview: schemas.CreateInterview, db: Session = Depends(get_db)):
+def create_interview_with(case: int, interview: schemas.CreateInterviewShell, db: Session = Depends(get_db)):
     return crud.create_interview_shell_for(case=case, db=db, interview=interview)
 
-# Route - PATCH - Patch Interview object
-@app.patch("/interviews/{interview_id}", response_model=schemas.Interview)
-def patch_interview_with(interview_id: int, interview: schemas.Interview, db: Session = Depends(get_db)):
+# Route - POST - Post data for Interview object
+@app.post("/interviews/{interview_id}/data", response_model=schemas.Interview)
+def post_data_for_interview_with(interview_id: int, interview: schemas.CreateInterview, db: Session = Depends(get_db)):
     return crud.patch_interview_for(interview_id=interview_id, db=db, interview=interview)
 
 # Route - GET - Get all interviews for a Case No.

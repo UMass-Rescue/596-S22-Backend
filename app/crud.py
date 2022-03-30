@@ -184,10 +184,25 @@ def create_interview_shell_for(case: int, db: Session, interviewShell: schemas.C
     
     return db_interview
 
-def patch_interview_for(interview_id: int, db: Session, interview: schemas.Interview):
+def patch_data_for_interview_with(interview_id: int, db: Session, interview: schemas.CreateInterview):
     db_interview = db.query(models.Interview).get(interview_id)
-    db_interview = interview
+    db_interview.is_processed = True
     db.commit(db_interview)
+
+    # Create Interview Answer Objects
+    for interviewAnswer in interview.interview_answers:
+        db_interview_answer = models.InterviewAnswer(answer=interviewAnswer.answer, question_id=interviewAnswer.question_id, interview_id=db_interview.id)
+        db.add(db_interview_answer)
+        db.commit()
+        db.refresh(db_interview_answer)
+
+        # Create Interview Answer NER Objects
+        for interviewAnswerNER in interviewAnswer.interview_answer_ners:
+            db_interview_answer_ner = models.InterviewAnswerNER(label=interviewAnswerNER.label, start_index=interviewAnswerNER.start_index, end_index=interviewAnswerNER.end_index, interview_answer_id=db_interview_answer.id)
+            db.add(db_interview_answer_ner)
+            db.commit()
+            db.refresh(db_interview_answer_ner)
+
     return db_interview
 
 def create_interview_with(case: int, db: Session, interview: schemas.CreateInterview):
