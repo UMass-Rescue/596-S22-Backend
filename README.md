@@ -34,6 +34,8 @@ To successfully connect to the database, we use a `.env` file, which you will ne
 POSTGRES_USER=
 POSTGRES_PASSWORD=
 POSTGRES_DB=
+
+# Transcriber Server Container Connection Details
 TRANSCRIBER_SERVER_HOSTNAME=
 TRANSCRIBER_SERBER_PORT=
 ```
