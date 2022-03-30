@@ -3,11 +3,14 @@ from email import message
 from statistics import mode
 from sqlalchemy.orm import Session
 from fastapi import  HTTPException
+from dotenv import load_dotenv
 import os
 import json
 import requests
 
 from . import models, schemas
+
+load_dotenv()
 
 # Create Case
 def create_case(db: Session):
@@ -182,8 +185,10 @@ def create_interview_shell_for(case: int, db: Session, interviewShell: schemas.C
 
     transcriber_obj = schemas.TranscriberObj(blob=blob, questions=questions, interview=db_interview)
 
+    routeStr = "http://" + os.getenv('TRANSCRIBER_SERVER_HOSTNAME') + ":" + os.getenv('TRANSCRIBER_SERVER_PORT') + "/sendTranscription/"
+
     # Send Transcriber obj to service
-    result = requests.post("http://localhost:8000/sendTranscription/", json=json.dumps(transcriber_obj.dict(), default = defaultconverter))
+    result = requests.post(routeStr, json=json.dumps(transcriber_obj.dict(), default = defaultconverter))
 
     if result.status_code > 400:
         raise HTTPException(status_code=404, detail="Unable to send to transcriber")
