@@ -1,7 +1,7 @@
 from email import message
 from typing import List
 
-from fastapi import Depends, FastAPI, HTTPException
+from fastapi import Depends, FastAPI, HTTPException, File, UploadFile
 from sqlalchemy.orm import Session
 
 from . import crud, models, schemas
@@ -108,6 +108,11 @@ def get_blobs_for_case(case: int, skip: int = 0, limit: int = 100, db: Session =
 @app.post("/{case}/blobs", response_model=schemas.Blob)
 def create_blob_with(case: int, blob: schemas.CreateBlob, db: Session = Depends(get_db)):
     return crud.create_blob_with(db=db, case=case, blob=blob)
+
+# Route - POST - upload then create blob with blobCreate, file and Case No.
+@app.post("/{case}/blobs", response_model=schemas.Blob)
+def upload_create_blob(case: int, blob: schemas.CreateBlob, file: UploadFile = File(...),  db: Session = Depends(get_db)):
+    return crud.create_blob_with(db=db, case=case, blob=blob, file=file)
 
 # Route - POST - create question with QuestionCreate and Case No.
 @app.post("/{case}/questions", response_model=schemas.Question)

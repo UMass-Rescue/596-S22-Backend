@@ -2,7 +2,8 @@ from datetime import datetime
 from email import message
 from statistics import mode
 from sqlalchemy.orm import Session
-from fastapi import  HTTPException
+from fastapi import  HTTPException, File, UploadFile
+from azure.storage.blob import BlobClient
 from dotenv import load_dotenv
 import os
 import json
@@ -149,6 +150,28 @@ def get_all_blobs_for_case(case: int, db: Session, skip: int = 0, limit: int = 0
 
 # Create blob object and upload to database
 def create_blob_with(case: int, blob: schemas.CreateBlob, db: Session):
+    db_blob = models.Blob(key=blob.key, file_type=blob.file_type, description=blob.description, case_id=case)
+    db.add(db_blob)
+    db.commit()
+    db.refresh(db_blob)
+    return db_blob
+
+# Upload a blob to Azure then create blob object and upload to database
+def upload_create_blob(case: int, blob: schemas.CreateBlob, db: Session, file: UploadFile = File(...)):
+    #THESE NEED TO BE ADDED TO THE .ENV
+    blob_account_url = os.getenv("BLOB_ACCOUNT_URL")
+    blob_credential = os.getenv("BLOB_CREDENTIAL")
+    blob_container = os.getenv("BLOB_CONTAINER")
+
+    blob = BlobClient(
+        account_url=blob_account_url,
+        container_name=blob_container,
+        blob_name=blob.key,
+        credential=blob_credential,
+    )
+    with open(file.file, "rb") as data:
+        blob.upload_blob(data)
+
     db_blob = models.Blob(key=blob.key, file_type=blob.file_type, description=blob.description, case_id=case)
     db.add(db_blob)
     db.commit()
