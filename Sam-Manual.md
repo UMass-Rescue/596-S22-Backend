@@ -55,7 +55,7 @@ While the majority of ground work has been layed out to host a reliable and vers
 
 Secondly, another place for improvement would be the interview-analyzer pipeline. A really quick architecture thrown together by myself and Collette, it would be valuable to revisist this pipeline and improve the way data flows. Currently, there are some tasks handled by the backend that could be offloaded to the front end or another intermediatery service. I think, with more time, I would have liked to improve this pipeline and architecture more.
 
-Finally, from there, the main improvement could be to add more support for other routes and entry points into the database. I think, for example, it would have been awesome to port over Smriti’s MongoDB code into the postgreSQL database so that everyone for our services existed in one place. Due to time, however, this did not happen.
+Finally, from there, the main improvement could be to add more support for other routes and entry points into the database. I think, for example, it would have been awesome to port over Smriti’s MongoDB code into the postgreSQL database so that all of our services existed in one place. Due to time, however, this did not happen.
 
 ### Summary
 
