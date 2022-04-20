@@ -49,9 +49,42 @@ class Message(BaseModel):
     class Config:
         orm_mode = True
 
+#---------------------------------------------------------
+
+ 
+class CreateOpt(BaseModel):
+    output_dir: str
+    num_to_draw: int
+    final_nms_thresh: float
+    use_cudnn: int
+    text_size: int
+    max_images: int
+    gpu: int
+    splits_json: str
+    vg_img_root_dir: str
+    checkpoint: str
+    num_proposals: int
+    rpn_nms_thresh: float
+    image_size: int
+    input_image: str
+    input_split: str
+    box_width: int
+    input_dir: str
+    output_vis_dir: str
+    output_vis: int
+
+
+class CreateResult(BaseModel):
+    img_name: str
+    scores: List[float]
+    captions: List[str]
+    boxes: List[List[float]]
+
+
 class DenseCaptionCreate(BaseModel):
-    opt: Dict[str, Union[str, int]]
-    results: List[Dict[str, Union[str, List[float], List[str], List[List[float]]]]]
+    opt: CreateOpt
+    results: List[CreateResult]
+
 
 class DenseCaptionChild(BaseModel):
     id: int
@@ -62,6 +95,14 @@ class DenseCaptionChild(BaseModel):
     bounding_w: float
     bounding_h: float
     parent_id: int
+
+    class Config:
+        orm_mode = True
+
+
+class DenseCaptionParent(BaseModel):
+    id: int
+    imageName: str
 
     class Config:
         orm_mode = True

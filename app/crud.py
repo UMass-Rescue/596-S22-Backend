@@ -55,16 +55,25 @@ def create_message(message: schemas.MessageCreate, db: Session):
 
 def create_dense_caption(data: schemas.DenseCaptionCreate, db: Session):
     for entry in data.results:
-        db_dense_caption_parent = models.DenseCaptionParent(imageName=entry["img_name"])
+        db_dense_caption_parent = models.DenseCaptionParent(imageName=entry.img_name)
         db.add(db_dense_caption_parent)
         db.commit()
         db.refresh(db_dense_caption_parent)
-        for i in range(len(entry["scores"])):
-            db_dense_caption_child = models.DenseCaptionChild(score=entry["scores"][i], caption=entry["captions"][i], bounding_x=entry["boxes"][i][0], bounding_y=entry["boxes"][i][1], bounding_w=entry["boxes"][i][2], bounding_h=entry["boxes"][i][3], parent_id=db_dense_caption_parent.id)
+        for i in range(len(entry.scores)):
+            db_dense_caption_child = models.DenseCaptionChild(score=entry.scores[i], caption=entry.captions[i], bounding_x=entry.boxes[i][0], bounding_y=entry.boxes[i][1], bounding_w=entry.boxes[i][2], bounding_h=entry.boxes[i][3], parent_id=db_dense_caption_parent.id)
             db.add(db_dense_caption_child)
             db.commit()
             db.refresh(db_dense_caption_child)
-    return "success!!"
+    return db_dense_caption_parent
 
 def get_children(parent_id: int, db: Session, skip: int = 0, limit: int = 100):
-    return db.query(models.DenseCaptionChild).filter(models.DenseCaptionChild.parent_id==parent_id).offset(skip).limit(limit).all()
+    data = db.query(models.DenseCaptionChild).filter(models.DenseCaptionChild.parent_id==parent_id).offset(skip).limit(limit).all()
+    final = {}
+    final['children'] = data
+    return final
+
+def get_parents(image_name: str, db: Session, skip: int = 0, limit: int = 5):
+    data = db.query(models.DenseCaptionParent).filter(models.DenseCaptionParent.imageName==image_name).offset(skip).limit(limit).all()
+    final = {}
+    final['parents'] = data
+    return final

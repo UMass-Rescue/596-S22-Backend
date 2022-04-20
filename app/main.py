@@ -1,6 +1,7 @@
 from email import message
-from typing import List
+from typing import List, Dict
 
+from fastapi.middleware.cors import CORSMiddleware
 from fastapi import Depends, FastAPI, HTTPException
 from sqlalchemy.orm import Session
 
@@ -9,6 +10,15 @@ from .database import SessionLocal, engine
 
 app = FastAPI()
 
+origins = ["*"]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 # Dependency
 def get_db():
     db = SessionLocal()
@@ -72,12 +82,16 @@ def reader_messages_for_user(user_id: int, skip: int = 0, limit: int = 100, db: 
 def create_message(message: schemas.MessageCreate, db: Session = Depends(get_db)):
     return crud.create_message(db=db, message=message)
 
-@app.post("/denseCaptionCreate/", response_model=str)
+@app.post("/denseCaptionCreate/", response_model=schemas.DenseCaptionChild)
 def create_dense_caption(data: schemas.DenseCaptionCreate, db: Session = Depends(get_db)):
     return crud.create_dense_caption(data=data, db=db)
 
-@app.get("/denseCaptionGet/{parent_id}/child", response_model=List[schemas.DenseCaptionChild])
+@app.get("/denseCaptionGet/{parent_id}/child", response_model=Dict[str, List[schemas.DenseCaptionChild]])
 def get_children(parent_id: int, skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
     children = crud.get_children(parent_id=parent_id, db=db, skip=skip, limit=limit)
     return children
-    
+
+@app.get("/denseCaptionGetParents/{image_name}", response_model=Dict[str, List[schemas.DenseCaptionParent]])
+def get_parents(image_name: str, skip: int = 0, limit: int = 5, db: Session = Depends(get_db)):
+    parents = crud.get_parents(image_name=image_name, db=db, skip=skip, limit=limit)
+    return parents
