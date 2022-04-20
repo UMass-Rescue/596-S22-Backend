@@ -51,7 +51,7 @@ With the combination of these two services, we are able to push out new versions
 
 ### Where to go from here
 
-While the majority of ground work has been layed out to host a reliable and versatile backend, there is always more places to expand. One particular area that got relatievly no attention this semester was testing. Testing is a massively important consideration in any software package, and the backends alarmingly low percentage of tests is very alarming. If future development were to be continued on this project, that would be the top priority, in my opinion.
+While the majority of ground work has been layed out to host a reliable and versatile backend, there is always more places to expand. One particular area that got relatievly no attention this semester was testing. Testing is a massively important consideration in any software package, and the backends alarmingly low percentage of tests is very concerning. If future development were to be continued on this project, that would be the top priority, in my opinion.
 
 Secondly, another place for improvement would be the interview-analyzer pipeline. A really quick architecture thrown together by myself and Collette, it would be valuable to revisist this pipeline and improve the way data flows. Currently, there are some tasks handled by the backend that could be offloaded to the front end or another intermediatery service. I think, with more time, I would have liked to improve this pipeline and architecture more.
 
