@@ -188,7 +188,7 @@ def create_interview_shell_for(case: int, db: Session, interviewShell: schemas.C
     routeStr = "http://" + os.getenv('TRANSCRIBER_SERVER_HOSTNAME') + ":" + os.getenv('TRANSCRIBER_SERVER_PORT') + "/sendTranscription/"
 
     # Send Transcriber obj to service
-    result = requests.post(routeStr, json=json.dumps(transcriber_obj.dict(), default = defaultconverter))
+    result = requests.post(routeStr, json=transcriber_obj.dict())
 
     if result.status_code > 400:
         raise HTTPException(status_code=404, detail="Unable to send to transcriber")
