@@ -191,7 +191,7 @@ def create_interview_shell_for(case: int, db: Session, interviewShell: schemas.C
     result = requests.post(routeStr, json=json.dumps(transcriber_obj.dict(), default = defaultconverter))
 
     if result.status_code > 400:
-        raise HTTPException(status_code=404, detail="Unable to send to transcriber")
+        raise HTTPException(status_code=result.status_code, detail=result.text)
     
     return db_interview
 
