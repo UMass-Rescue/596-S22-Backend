@@ -181,12 +181,15 @@ def create_interview_shell_for(case: int, db: Session, interviewShell: schemas.C
 
     # Create Model to send to Transcriber
     blob = db.query(models.Blob).filter(models.Blob.id == interviewShell.blob_id).first()
-    questions = db.query(models.Question).all()
+    questions = db.query(models.Question).filter(models.Question.case_id == case).all()
 
     transcriber_obj = schemas.TranscriberObj(blob=blob, questions=questions, interview=db_interview)
 
     routeStr = "http://" + os.getenv('TRANSCRIBER_SERVER_HOSTNAME') + ":" + os.getenv('TRANSCRIBER_SERVER_PORT') + "/sendTranscription/"
 
+    json_obj = json.dumps(transcriber_obj.dict(), default = defaultconverter)
+    print(json_obj)
+    
     # Send Transcriber obj to service
     result = requests.post(routeStr, json=json.dumps(transcriber_obj.dict(), default = defaultconverter))
 
