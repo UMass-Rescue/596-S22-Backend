@@ -1,8 +1,9 @@
 from email import message
 from typing import List, Dict
+import shutil
 
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi import Depends, FastAPI, HTTPException
+from fastapi import Depends, FastAPI, HTTPException, File, UploadFile
 from sqlalchemy.orm import Session
 
 from . import crud, models, schemas
@@ -95,3 +96,15 @@ def get_children(parent_id: int, skip: int = 0, limit: int = 100, db: Session = 
 def get_parents(image_name: str, skip: int = 0, limit: int = 5, db: Session = Depends(get_db)):
     parents = crud.get_parents(image_name=image_name, db=db, skip=skip, limit=limit)
     return parents
+
+@app.get("/denseCaptionGetimages/{keyword}", response_model=Dict[str, List[str]])
+def get_images(keyword: str, skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
+    images = crud.get_images_keyword(keyword=keyword, db=db, skip=skip, limit=limit)
+    return images
+
+@app.post("/denseCaptionUploadImages", response_model=Dict[str, str])
+def image(image: UploadFile = File(...)):
+    image_object = image.file
+    with open("destination.jpg", "wb+") as upload:
+        shutil.copyfileobj(image_object, upload)
+    return {"filename": image.filename}

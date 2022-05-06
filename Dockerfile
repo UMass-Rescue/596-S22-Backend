@@ -6,4 +6,6 @@ COPY requirements.txt requirements.txt
 
 RUN pip install --no-cache-dir --upgrade -r /rescue/requirements.txt
 
+RUN pip install python-multipart
+
 COPY ./app /rescue/app

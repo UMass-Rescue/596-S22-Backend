@@ -77,3 +77,15 @@ def get_parents(image_name: str, db: Session, skip: int = 0, limit: int = 5):
     final = {}
     final['parents'] = data
     return final
+
+def get_images_keyword(keyword: str, db: Session, skip: int = 0, limit: int = 100):
+    data = db.query(models.DenseCaptionChild).filter(models.DenseCaptionChild.caption.contains(keyword)).offset(skip).limit(limit).all()
+    final_data = []
+    for child in data:
+        temp1 = db.query(models.DenseCaptionParent).filter(models.DenseCaptionParent.id==child.parent_id).offset(skip).limit(limit).all()
+        final_data.append(temp1[0].imageName)
+        #final_data.append(child.parent_id)
+    real_final = list(dict.fromkeys(final_data))
+    final = {}
+    final['temp'] = real_final
+    return final
